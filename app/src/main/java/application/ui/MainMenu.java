@@ -1,5 +1,7 @@
 package application.ui;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 public class MainMenu {
     private AlbumsList albumsList;
     private SongsList songsList;
@@ -23,6 +25,10 @@ public class MainMenu {
 
     }
     public void logOut(){
+
+    }
+
+    public void create(AppCompatActivity activity){
 
     }
 }

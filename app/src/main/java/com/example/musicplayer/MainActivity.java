@@ -3,6 +3,7 @@ package com.example.musicplayer;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import application.ui.Login;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
@@ -17,15 +18,19 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private Login login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+  //      binding = ActivityMainBinding.inflate(getLayoutInflater());
+ //       setContentView(R.layout.login);
 
-        setSupportActionBar(binding.appBarMain.toolbar);
+        login = new Login();
+        login.create(this);
+
+/*        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,6 +62,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+                || super.onSupportNavigateUp();*/
     }
 }
