@@ -1,20 +1,170 @@
 package application.core;
 
-import java.sql.Connection;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
 
-public class LocalDatabase {
+import java.sql.*;
+
+public class LocalDatabase extends SQLiteOpenHelper {
     private Connection database;
 
-    public void getAlbum(){
+    private Context context;
+    private static final String DATABASE_NAME = "LocalDatabase.db";
+    private static final int DATABASE_VERSION = 1;
+
+    private static final String SONG_TABLE_NAME = "songs";
+    private static final String SONG_ID = "_id";
+    private static final String SONG_NAME = "song_name";
+    private static final String SONG_LENGTH = "song_length";
+    private static final String SONG_ARTIST = "song_artist";
+    private static final String SONG_ALBUM_NAME = "song_album_name";
+    private static final String USER_TABLE_NAME = "users";
+    private static final String USER_ID = "_id";
+    private static final String USER_NAME = "user_name";
+    private static final String USER_PASSWORD= "user_password";
+
+
+    public LocalDatabase(@Nullable Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    public void getAlbum() {
 
     }
-    public void getAlbums(){
+    void addSong(String name, Integer length, String artist, String albumName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(SONG_NAME, name);
+        cv.put(SONG_LENGTH, length);
+        cv.put(SONG_ARTIST, artist);
+        cv.put(SONG_ALBUM_NAME, albumName);
+        long result = db.insert(SONG_TABLE_NAME,null, cv);
+        if(result == -1){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Added Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    void addUser(String name, String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(USER_NAME, name);
+        cv.put(USER_PASSWORD, password);
+        long result = db.insert(USER_TABLE_NAME,null, cv);
+        if(result == -1){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Added Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    Cursor readAllSongs(){
+        String query = "SELECT * FROM " + SONG_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+    Cursor readAllusers(){
+        String query = "SELECT * FROM " + USER_TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+    void updateSong(String row_id, String name, Integer length, String artist, String albumName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(SONG_NAME, name);
+        cv.put(SONG_LENGTH, length);
+        cv.put(SONG_ARTIST, artist);
+        cv.put(SONG_ALBUM_NAME, albumName);
+
+        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{row_id});
+        if(result == -1){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    void updateUser(String row_id, String name, String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(USER_NAME, name);
+        cv.put(USER_PASSWORD, password);
+
+        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{row_id});
+        if(result == -1){
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    void deleteOneSong(String row_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(SONG_TABLE_NAME, "_id=?", new String[]{row_id});
+        if(result == -1){
+            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    void deleteOneUser(String row_id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(USER_TABLE_NAME, "_id=?", new String[]{row_id});
+        if(result == -1){
+            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public void getAlbums() {
 
     }
-    public void getSongs(){
+
+    public void getSongs() {
 
     }
-    public void getSongsInAlbum(){
 
+    public void getSongsInAlbum() {
+
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String query1 = "CREATE TABLE " + SONG_TABLE_NAME +
+                " (" + SONG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                SONG_NAME + " TEXT, " +
+                SONG_LENGTH + " INTEGER, " +
+                SONG_ARTIST + " TEXT, " +
+                SONG_ALBUM_NAME + " TEXT);";
+        db.execSQL(query1);
+        String query2 = "CREATE TABLE " + USER_TABLE_NAME +
+                " (" + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                USER_NAME + " TEXT, " +
+                USER_PASSWORD + " TEXT);";
+        db.execSQL(query2);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("DROP TABLE IF EXISTS " + SONG_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
+        onCreate(db);
     }
 }
