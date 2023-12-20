@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class SongsController {
     private ArrayList<Song> songs;
-    public void playSong(){
-
+    Song playSong(Song song){
+        //get song from file
     }
 }

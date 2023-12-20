@@ -1,8 +1,9 @@
 package application.core;
 
 public class Authorize {
-    public void authorize(){
-
+    LocalDatabase database;
+    public boolean authorize(String username, String password){
+        return database.processLogin(username, password);
     }
     public void showLogInWindow(){
 

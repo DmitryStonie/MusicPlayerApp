@@ -38,14 +38,14 @@ public class LocalDatabase extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    void addSong(String name, Integer length, String artist, String albumName){
+    void addSong(Song song){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(SONG_NAME, name);
-        cv.put(SONG_LENGTH, length);
-        cv.put(SONG_ARTIST, artist);
-        cv.put(SONG_ALBUM_NAME, albumName);
+        cv.put(SONG_NAME, song.getName());
+        cv.put(SONG_LENGTH, song.getLength());
+        cv.put(SONG_ARTIST, song.getArtist());
+        cv.put(SONG_ALBUM_NAME, song.getAlbumName());
         long result = db.insert(SONG_TABLE_NAME,null, cv);
         if(result == -1){
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
@@ -53,18 +53,17 @@ public class LocalDatabase extends SQLiteOpenHelper {
             Toast.makeText(context, "Added Successfully!", Toast.LENGTH_SHORT).show();
         }
     }
-    void addUser(String name, String password){
+    boolean addUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(USER_NAME, name);
-        cv.put(USER_PASSWORD, password);
+        cv.put(USER_NAME, user.getName());
+        cv.put(USER_PASSWORD, user.getPassword());
         long result = db.insert(USER_TABLE_NAME,null, cv);
-        if(result == -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Added Successfully!", Toast.LENGTH_SHORT).show();
-        }
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
     Cursor readAllSongs(){
         String query = "SELECT * FROM " + SONG_TABLE_NAME;
@@ -87,7 +86,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
         return cursor;
     }
 
-    Cursor readAllusers(){
+    Cursor readAllUsers(){
         String query = "SELECT * FROM " + USER_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -97,7 +96,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
         }
         return cursor;
     }
-    void updateSong(Song song){
+    boolean updateSong(Song song){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(SONG_NAME, song.getName());
@@ -106,42 +105,38 @@ public class LocalDatabase extends SQLiteOpenHelper {
         cv.put(SONG_ALBUM_NAME, song.getAlbumName());
 
         long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{song.getId().toString()});
-        if(result == -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
-        }
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
-    void updateUser(User user){
+    boolean updateUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(USER_NAME, name);
-        cv.put(USER_PASSWORD, password);
+        cv.put(USER_NAME, user.getName());
+        cv.put(USER_PASSWORD, user.getPassword());
 
-        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{row_id});
-        if(result == -1){
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        }else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
-        }
+        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{user.getId().toString()});
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
-    void deleteOneSong(String songId){
+    boolean deleteOneSong(String songId){
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(SONG_TABLE_NAME, "_id=?", new String[]{songId});
-        if(result == -1){
-            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
-        }
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
-    void deleteOneUser(String userId){
+    boolean deleteOneUser(String userId){
         SQLiteDatabase db = this.getWritableDatabase();
         long result = db.delete(USER_TABLE_NAME, "_id=?", new String[]{userId});
-        if(result == -1){
-            Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
-        }
+        if(result == -1)
+            return false;
+        else
+            return true;
     }
 
     public Album getAlbum(String album_id) {
@@ -151,19 +146,17 @@ public class LocalDatabase extends SQLiteOpenHelper {
 
     }
 
-    public ArrayList<Song> getSongs() {
-        ArrayList<Song> songs = new ArrayList<>();
-        Cursor cursor = readAllSongs();
-        if(cursor.getCount() != 0){
-            while (cursor.moveToNext()){
-                songs.add(new Song(Integer.getInteger(cursor.getString(0)), cursor.getString(1), Integer.getInteger(cursor.getString(2)), cursor.getString(3),cursor.getString(4), cursor.getString(5)));
-            }
-        }
-        return songs;
-    }
-
     public ArrayList<Song> getSongsInAlbum() {
 
+    }
+    public boolean processLogin(String username, String password){
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery("Select * from " + USER_TABLE_NAME + " where " + USER_NAME + " = ? and " + USER_PASSWORD + " = ?", new String[]{username, password});
+            if(cursor.getCount() > 0) {
+                return true;
+            }else {
+                return false;
+            }
     }
 
     @Override

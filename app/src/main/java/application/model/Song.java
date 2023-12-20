@@ -17,6 +17,9 @@ public class Song {
     public void getSong(){
 
     }
+    public Song(){
+
+    }
     public Song(Integer id, String name, Integer length, String artist, String albumName, String path){
         this.id = id;
         this.name = name;
