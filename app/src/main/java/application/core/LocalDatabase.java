@@ -7,8 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
+import application.model.Album;
+import application.model.Song;
+import application.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class LocalDatabase extends SQLiteOpenHelper {
     private Connection database;
@@ -34,9 +38,6 @@ public class LocalDatabase extends SQLiteOpenHelper {
         this.context = context;
     }
 
-    public void getAlbum() {
-
-    }
     void addSong(String name, Integer length, String artist, String albumName){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -75,6 +76,17 @@ public class LocalDatabase extends SQLiteOpenHelper {
         }
         return cursor;
     }
+    Cursor readSongsInAlbum(String album){
+        String query = "SELECT * FROM " + SONG_TABLE_NAME + " WHERE " + SONG_ALBUM_NAME + " = " + album + ";";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null);
+        }
+        return cursor;
+    }
+
     Cursor readAllusers(){
         String query = "SELECT * FROM " + USER_TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -85,22 +97,22 @@ public class LocalDatabase extends SQLiteOpenHelper {
         }
         return cursor;
     }
-    void updateSong(String row_id, String name, Integer length, String artist, String albumName){
+    void updateSong(Song song){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(SONG_NAME, name);
-        cv.put(SONG_LENGTH, length);
-        cv.put(SONG_ARTIST, artist);
-        cv.put(SONG_ALBUM_NAME, albumName);
+        cv.put(SONG_NAME, song.getName());
+        cv.put(SONG_LENGTH, song.getLength());
+        cv.put(SONG_ARTIST, song.getArtist());
+        cv.put(SONG_ALBUM_NAME, song.getAlbumName());
 
-        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{row_id});
+        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{song.getId().toString()});
         if(result == -1){
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
         }
     }
-    void updateUser(String row_id, String name, String password){
+    void updateUser(User user){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(USER_NAME, name);
@@ -113,18 +125,18 @@ public class LocalDatabase extends SQLiteOpenHelper {
             Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
         }
     }
-    void deleteOneSong(String row_id){
+    void deleteOneSong(String songId){
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(SONG_TABLE_NAME, "_id=?", new String[]{row_id});
+        long result = db.delete(SONG_TABLE_NAME, "_id=?", new String[]{songId});
         if(result == -1){
             Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context, "Successfully Deleted.", Toast.LENGTH_SHORT).show();
         }
     }
-    void deleteOneUser(String row_id){
+    void deleteOneUser(String userId){
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(USER_TABLE_NAME, "_id=?", new String[]{row_id});
+        long result = db.delete(USER_TABLE_NAME, "_id=?", new String[]{userId});
         if(result == -1){
             Toast.makeText(context, "Failed to Delete.", Toast.LENGTH_SHORT).show();
         }else{
@@ -132,16 +144,25 @@ public class LocalDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public Album getAlbum(String album_id) {
 
-    public void getAlbums() {
+    }
+    public ArrayList<Album> getAlbums() {
 
     }
 
-    public void getSongs() {
-
+    public ArrayList<Song> getSongs() {
+        ArrayList<Song> songs = new ArrayList<>();
+        Cursor cursor = readAllSongs();
+        if(cursor.getCount() != 0){
+            while (cursor.moveToNext()){
+                songs.add(new Song(Integer.getInteger(cursor.getString(0)), cursor.getString(1), Integer.getInteger(cursor.getString(2)), cursor.getString(3),cursor.getString(4), cursor.getString(5)));
+            }
+        }
+        return songs;
     }
 
-    public void getSongsInAlbum() {
+    public ArrayList<Song> getSongsInAlbum() {
 
     }
 
