@@ -14,9 +14,6 @@ public class Song {
     private ArrayList<Byte> data;
     private String path;
 
-    public void getSong(){
-
-    }
     public Song(){
 
     }

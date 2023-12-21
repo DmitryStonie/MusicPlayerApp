@@ -5,9 +5,7 @@ public class User {
     private String name;
     private String password;
     private Integer status;
-    public void getUser(){
 
-    }
     public User(String name, String password, Integer status){
         this.name = name;
         this.password = password;
