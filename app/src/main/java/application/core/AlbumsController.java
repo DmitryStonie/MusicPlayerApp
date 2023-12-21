@@ -17,9 +17,7 @@ public class AlbumsController {
     }
     public AlbumsController(Context context) {
         this.context = context;
-        //database = new LocalDatabase(context);
         albums = new ArrayList<>();
-        //updateSongs();
     }
     public ArrayList<Album> getAlbums() {
         albums.clear();
