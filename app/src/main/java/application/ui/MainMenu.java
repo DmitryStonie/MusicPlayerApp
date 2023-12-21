@@ -61,8 +61,10 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.nav_songlist)
+        if (item.getItemId() == R.id.nav_songlist) {
+            songsList = new SongsList();
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsList()).commit();
+        }
         else if (item.getItemId() == R.id.nav_albumsongs)
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlbumsList()).commit();
         else if (item.getItemId() == R.id.nav_addsong)
