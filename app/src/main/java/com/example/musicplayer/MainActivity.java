@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         if(!PermissionUtils.hasPermissions(MainActivity.this))
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
         SongsController cont = new SongsController(MainActivity.this);
-        ArrayList<Song> songs = cont.getSongs(MainActivity.this);
+        ArrayList<Song> songs = cont.getSongs();
 
 /*        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {

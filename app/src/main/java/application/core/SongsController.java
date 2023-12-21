@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class SongsController {
     private ArrayList<Song> songs;
     LocalDatabase database;
+    Context context;
 
     Song playSong(Song song) {
         return new Song();
@@ -23,7 +24,8 @@ public class SongsController {
     }
 
     public SongsController(Context context) {
-        database = new LocalDatabase(context);
+        this.context = context;
+        //database = new LocalDatabase(context);
         songs = new ArrayList<>();
         //updateSongs();
     }
@@ -38,7 +40,7 @@ public class SongsController {
 //        }
     }
 
-    public ArrayList<Song> getSongs(Context context) {
+    public ArrayList<Song> getSongs() {
         songs.clear();
         Uri songLibraryUri;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
