@@ -1,14 +1,27 @@
 package application.core;
 
+import java.io.*;
+import java.net.Socket;
+
 public class Authorize {
-    public void authorize(){
+    LocalDatabase database;
+    private static int serverPort = 9345;
+    public boolean authorize(String username, String password, String ip){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Socket socket = new Socket(ip, serverPort);
+                    PrintWriter serverOutput = new PrintWriter(socket.getOutputStream());
+                    serverOutput.write(username + password);
+                    BufferedReader serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-    }
-    public void showLogInWindow(){
-
-    }
-    public void showMainMenu(){
-
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        })
+        return database.processLogin(username, password);
     }
 
 }
