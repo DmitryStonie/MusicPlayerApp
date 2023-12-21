@@ -29,8 +29,8 @@ public class Server extends SQLiteOpenHelper {
         cv.put(SONG_LENGTH, song.getDuration());
         cv.put(SONG_ARTIST, song.getArtist());
         cv.put(SONG_ALBUM_NAME, song.getAlbumName());
-
-        long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{song.getId().toString()});
+        int result = 1;
+        //long result = db.update(SONG_TABLE_NAME, cv, "_id=?", new String[]{song.getId().toString()});
         return result != -1;
     }
     boolean deleteSong(String songId){
