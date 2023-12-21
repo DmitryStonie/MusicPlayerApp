@@ -1,8 +1,11 @@
 package application.model;
 
+import android.annotation.SuppressLint;
 import android.media.Image;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Song {
@@ -40,8 +43,16 @@ public class Song {
         return artist;
     }
 
-    public int getDuration() {
-        return duration;
+    @SuppressLint("DefaultLocale")
+    public String getDuration() {
+        int hrs = duration / (1000*60*60);
+        int min = (duration%(1000*60*60))/(1000*60);
+        int secs = ((duration%(1000*60*60))%(1000*60))/1000;
+
+        if(hrs < 1)
+            return String.format("%02d:%02d", min, secs);
+        else
+            return String.format("%1d:%02d:%02d", hrs, min, secs);
     }
 
     public String getName() {
@@ -58,5 +69,17 @@ public class Song {
 
     public Uri getAlbumArtUri() {
         return albumArtUri;
+    }
+    private byte[] getImage() {
+        byte[] art;
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(this.albumArtUri.toString());
+            art = retriever.getEmbeddedPicture();
+            retriever.release();
+        } catch (IOException e) {
+            return null;
+        }
+        return art;
     }
 }
