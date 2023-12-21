@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import application.core.SongsController;
 import application.model.Song;
 import application.ui.Login;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         login.create(this, savedInstanceState);
         if(!PermissionUtils.hasPermissions(MainActivity.this))
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
-        ArrayList<Song> songs = fetchSongs();
+        SongsController cont = new SongsController(MainActivity.this);
+        ArrayList<Song> songs = cont.getSongs(MainActivity.this);
 
 /*        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
@@ -101,11 +103,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-    private ArrayList<Song> fetchSongs() {
-        ArrayList<Song> songs = new ArrayList<>();
-        Uri songLibraryUri;
-        //if(Build.VERSION)
-        return songs;
     }
 }

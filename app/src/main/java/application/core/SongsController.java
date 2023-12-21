@@ -5,7 +5,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.widget.Toast;
 import androidx.annotation.Nullable;
 import application.model.Song;
 
@@ -36,8 +38,55 @@ public class SongsController {
 //        }
     }
 
-    public ArrayList<Song> getSongs(ContentResolver contentResolver, Uri uri) {
-//        songs.clear();
+    public ArrayList<Song> getSongs(Context context) {
+        songs.clear();
+        Uri songLibraryUri;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            songLibraryUri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+        } else{
+            songLibraryUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        }
+        String[] projection = new String[]{
+                MediaStore.Audio.Media._ID,
+                MediaStore.Audio.Media.DISPLAY_NAME,
+                MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.ALBUM,
+                MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.Media.ALBUM_ID,
+        };
+        String sortOrder = MediaStore.Audio.Media.DATE_ADDED + " DESC";
+
+        try(Cursor cursor = context.getContentResolver().query(songLibraryUri, projection, null, null, sortOrder)){
+            int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID);
+            int nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME);
+            int artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST);
+            int albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM);
+            int durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION);
+            int albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
+
+            while(cursor.moveToNext()){
+                long id = cursor.getLong(idColumn);
+                String name = cursor.getString(nameColumn);
+                int duration = cursor.getInt(durationColumn);
+                String artist = cursor.getString(artistColumn);
+                String album = cursor.getString(albumColumn);
+                long albumId = cursor.getLong(albumIdColumn);
+
+                Uri uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,id);
+                Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), albumId);
+
+                name = name.substring(0, name.lastIndexOf("."));
+
+                Song song = new Song(id, name, duration, artist, album, uri, albumArtUri);
+                songs.add(song);
+            }
+        }
+        Toast.makeText(context, "Songs: " + songs.size(), Toast.LENGTH_SHORT).show();
+        return songs;
+    }
+}
+
+
 //        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + " LIKE?", new String[]{"%.mp3%"}, null);
 //        if (cursor != null) {
 //            while (cursor.moveToNext()) {
@@ -54,6 +103,3 @@ public class SongsController {
 //            cursor.close();
 //        }
 //        return songs;
-        return new ArrayList<>();
-    }
-}

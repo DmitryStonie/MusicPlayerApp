@@ -7,13 +7,12 @@ import java.util.ArrayList;
 
 public class Song {
     private Image cover;
-    private Integer id;
+    private long id;
     private String name;
-    private String duration;
+    private int duration;
     private String artist;
     private String albumName;
     private ArrayList<Byte> data;
-    private String path;
     private Uri songUri;
     private Uri albumArtUri;
 
@@ -22,19 +21,16 @@ public class Song {
 
     }
 
-    public Song(Integer id, String name, String length, String artist, String albumName, Uri songUri, Uri albumArtUri) {
+    public Song(long id, String name, int duration, String artist, String albumName, Uri songUri, Uri albumArtUri) {
         this.id = id;
         this.name = name;
-        this.duration = length;
+        this.duration = duration;
         this.artist = artist;
         this.albumName = albumName;
         this.songUri = songUri;
         this.albumArtUri = albumArtUri;
     }
 
-    public String getPath() {
-        return path;
-    }
 
     public String getAlbumName() {
         return albumName;
@@ -44,7 +40,7 @@ public class Song {
         return artist;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
@@ -52,11 +48,15 @@ public class Song {
         return name;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
     public Uri getSongUri() {
         return songUri;
+    }
+
+    public Uri getAlbumArtUri() {
+        return albumArtUri;
     }
 }
