@@ -54,7 +54,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         if (savedInstanceState == null) {
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsList()).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsList(activity)).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
@@ -62,8 +62,8 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_songlist) {
-            songsList = new SongsList();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsList()).commit();
+            songsList = new SongsList(activity);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, songsList).commit();
         }
         else if (item.getItemId() == R.id.nav_albumsongs)
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlbumsList()).commit();

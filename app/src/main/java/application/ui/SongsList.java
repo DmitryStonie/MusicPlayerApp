@@ -29,7 +29,7 @@ public class SongsList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle SavedInterfaceState){
         SongsController controller = new SongsController(activity.getApplicationContext());
-      //  ArrayList<Song> songs =  controller.getSongs();
+        ArrayList<Song> songs =  controller.getSongs();
         return inflater.inflate(R.layout.fragment_songlist, container, false);
     }
 }
