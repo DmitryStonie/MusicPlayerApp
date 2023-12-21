@@ -78,8 +78,10 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsManager()).commit();
         else if (item.getItemId() == R.id.nav_users)
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UsersList()).commit();
-        else if (item.getItemId() == R.id.nav_exit)
-            Toast.makeText(activity, "Logout!", Toast.LENGTH_SHORT).show();
+        else if (item.getItemId() == R.id.nav_exit) {
+            activity.finish();
+ //           Toast.makeText(activity, "Logout!", Toast.LENGTH_SHORT).show();
+        }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
