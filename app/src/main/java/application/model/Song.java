@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Song {
-    private Image cover;
     private long id;
     private String name;
     private int duration;
@@ -53,6 +52,9 @@ public class Song {
             return String.format("%02d:%02d", min, secs);
         else
             return String.format("%1d:%02d:%02d", hrs, min, secs);
+    }
+    public int getRawDuration(){
+        return duration;
     }
 
     public String getName() {

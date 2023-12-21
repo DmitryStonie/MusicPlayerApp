@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import application.core.PlayerController;
 import application.core.SongsController;
 import application.model.Song;
 import application.ui.Login;
@@ -25,13 +26,15 @@ import com.example.musicplayer.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private Login login;
     private static final int PERMISSION_STORAGE = 101;
-
+    PlayerController contPlay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         login.create(this, savedInstanceState);
         if(!PermissionUtils.hasPermissions(MainActivity.this))
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
-        SongsController cont = new SongsController(MainActivity.this);
-        ArrayList<Song> songs = cont.getSongs();
+        contPlay = new PlayerController(MainActivity.this);
+        contPlay.playSong();
+        contPlay.nextSong();
 
 /*        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
