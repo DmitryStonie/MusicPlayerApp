@@ -10,22 +10,13 @@ public class UsersController {
     private final ArrayList<User> users;
     private final LocalDatabase database;
     public boolean deleteUser(Integer id){
-        boolean result = database.deleteOneUser(id.toString());
-        if(result)
-            updateUsers();
-        return result;
+        return database.deleteUser(id.toString());
     }
     public boolean editUser(Integer id, String username, String password, String status){
-        boolean result = database.updateUser(new User(id, username, password, Integer.getInteger(status)));
-        if(result)
-            updateUsers();
-        return result;
+        return database.updateUser(new User(id, username, password, Integer.getInteger(status)));
     }
     public boolean addUser(String username, String password, String status){//idk about status
-        boolean result = database.addUser(new User(username, password, Integer.getInteger(status)));
-        if(result)
-            updateUsers();
-        return result;
+        return database.addUser(new User(username, password, Integer.getInteger(status)));
     }
     public UsersController(Context context){
         database = new LocalDatabase(context);
@@ -33,6 +24,7 @@ public class UsersController {
         updateUsers();
     }
     public ArrayList<User> getUsers(){
+        updateUsers();
         return users;
     }
     private void updateUsers(){
