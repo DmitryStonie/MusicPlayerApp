@@ -20,7 +20,7 @@ public class Authorize {
                     throw new RuntimeException(e);
                 }
             }
-        })
+        });
         return database.processLogin(username, password);
     }
 

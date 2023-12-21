@@ -16,6 +16,7 @@ public class SongsController {
     LocalDatabase database;
 
     Song playSong(Song song) {
+        return new Song();
         //get song from file
     }
 
@@ -36,22 +37,23 @@ public class SongsController {
     }
 
     public ArrayList<Song> getSongs(ContentResolver contentResolver, Uri uri) {
-        songs.clear();
-        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + " LIKE?", new String[]{"%.mp3%"}, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                final String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
-                final String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-                final String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
-                final String duration = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-
-                long cursorId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
-                Uri musicFileUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorId);
-                Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), cursorId)
-                songs.add(new Song((int)cursorId, name, duration, artist, album, musicFileUri, albumArtUri));
-            }
-            cursor.close();
-        }
-        return songs;
+//        songs.clear();
+//        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA + " LIKE?", new String[]{"%.mp3%"}, null);
+//        if (cursor != null) {
+//            while (cursor.moveToNext()) {
+//                final String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+//                final String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+//                final String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+//                final String duration = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+//
+//                long cursorId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
+//                Uri musicFileUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, cursorId);
+//                Uri albumArtUri = ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), cursorId);
+//                songs.add(new Song((int)cursorId, name, duration, artist, album, musicFileUri, albumArtUri));
+//            }
+//            cursor.close();
+//        }
+//        return songs;
+        return new ArrayList<>();
     }
 }

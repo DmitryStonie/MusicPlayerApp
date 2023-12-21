@@ -53,7 +53,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
                 final String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
                 final String length = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
 
-                addSong(new Song(0, ));
+                //addSong(new Song(0, ));
             }
         }
     }
@@ -73,7 +73,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         cv.put(SONG_NAME, song.getName());
-        cv.put(SONG_LENGTH, song.getLength());
+        cv.put(SONG_LENGTH, song.getDuration());
         cv.put(SONG_ARTIST, song.getArtist());
         cv.put(SONG_ALBUM_NAME, song.getAlbumName());
         db.insert(SONG_TABLE_NAME,null, cv);
@@ -128,14 +128,14 @@ public class LocalDatabase extends SQLiteOpenHelper {
         return cursor.getCount() > 0;
     }
     public Album getAlbum(String album_id) {
-
+        return new Album();
     }
     public ArrayList<Album> getAlbums() {
-
+        return new ArrayList<>();
     }
 
     public ArrayList<Song> getSongsInAlbum() {
-
+        return new ArrayList<>();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class Server extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(SONG_NAME, song.getName());
-        cv.put(SONG_LENGTH, song.getLength());
+        cv.put(SONG_LENGTH, song.getDuration());
         cv.put(SONG_ARTIST, song.getArtist());
         cv.put(SONG_ALBUM_NAME, song.getAlbumName());
 
@@ -43,7 +43,7 @@ public class Server extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
 
         cv.put(SONG_NAME, song.getName());
-        cv.put(SONG_LENGTH, song.getLength());
+        cv.put(SONG_LENGTH, song.getDuration());
         cv.put(SONG_ARTIST, song.getArtist());
         cv.put(SONG_ALBUM_NAME, song.getAlbumName());
         long result = db.insert(SONG_TABLE_NAME,null, cv);
