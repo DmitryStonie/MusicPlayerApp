@@ -9,6 +9,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.example.musicplayer.MainActivity;
 import com.example.musicplayer.R;
 import com.google.android.material.navigation.NavigationView;
@@ -21,6 +23,8 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     private MusicPlayer musicPlayer;
     private AppCompatActivity activity;
     private DrawerLayout drawerLayout;
+    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
 
     public void openSideMenu(){
 
@@ -43,6 +47,8 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     public void create(AppCompatActivity activity, Bundle savedInstanceState){
         this.activity = activity;
         activity.setContentView(R.layout.activity_main);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         Toolbar toolbar = activity.findViewById(R.id.toolbar); //Ignore red line errors
         activity.setSupportActionBar(toolbar);
@@ -54,7 +60,8 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         if (savedInstanceState == null) {
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsList(activity)).commit();
+            songsList = new SongsList(activity);
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, songsList).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
     }
