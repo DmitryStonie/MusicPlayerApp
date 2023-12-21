@@ -18,13 +18,37 @@ public class PlayerController {
     public void playAlbum(Album album){
 
     }
-    public PlayerController(Context context){
+    public PlayerController(Context context, SongsController songCont, AlbumsController albCont){
         this.context = context;
-        this.songCont = new SongsController(context);
+        this.songCont = songCont;
+        this.albCont = albCont;
         this.songs = songCont.getSongs();
         this.currentSong = songs.get(currentSongPos);
     }
-
+    public Song playSongs(ArrayList<Song> songs, Song song){
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+        this.songs = songs;
+        currentSongPos = songs.indexOf(song);
+        currentSong = song;
+        mediaPlayer = MediaPlayer.create(context, currentSong.getSongUri());
+        mediaPlayer.start();
+        return currentSong;
+    }
+    public Song playAlbum(Album album, Song song){
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+        this.songs = album.getSongs();
+        currentSongPos = songs.indexOf(song);
+        currentSong = song;
+        mediaPlayer = MediaPlayer.create(context, currentSong.getSongUri());
+        mediaPlayer.start();
+        return currentSong;
+    }
     public Song playSong(){
         if(mediaPlayer != null){
             mediaPlayer.stop();
