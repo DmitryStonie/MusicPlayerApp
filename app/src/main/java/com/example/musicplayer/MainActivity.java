@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
  //       setContentView(R.layout.login);
 
         login = new Login();
-        login.create(this);
+        login.create(this, savedInstanceState);
 
 /*        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
