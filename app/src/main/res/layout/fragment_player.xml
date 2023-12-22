@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
+             tools:context="application.ui.MusicPlayer">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/frag_bottom_player"
+            android:background="@color/design_default_color_primary_dark"
+            android:padding="5dp">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="406dp"
+                android:layout_height="70dp">
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:id="@+id/song_artist"
+                      android:text="song artist name"
+                      android:textColor="#fff"
+                      android:textSize="16sp"
+                      android:maxLines="1"
+                      android:layout_marginStart="20dp"
+                      app:layout_constraintStart_toEndOf="@+id/bottom_album"
+                      app:layout_constraintEnd_toStartOf="@+id/bottom_play" android:layout_marginEnd="90dp"
+                      app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:id="@+id/song_name"
+                      android:text="song name"
+                      android:textColor="#fff"
+                      android:textSize="18sp"
+                      android:maxLines="1"
+                      app:layout_constraintEnd_toStartOf="@+id/bottom_play"
+                      app:layout_constraintStart_toEndOf="@+id/bottom_album" android:layout_marginStart="20dp"
+                      app:layout_constraintHorizontal_bias="0.0" android:layout_marginBottom="4dp"
+                      app:layout_constraintBottom_toTopOf="@+id/song_artist"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_play"
+                    app:fabSize="mini"
+                    android:id="@+id/bottom_play"
+                    app:layout_constraintEnd_toStartOf="@+id/bottom_next" app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="4dp" android:layout_marginEnd="8dp"/>
+            <ImageView android:layout_width="30dp"
+                       android:layout_height="30dp"
+                       android:id="@+id/bottom_next"
+                       android:src="@drawable/ic_next_song"
+                       app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                       android:layout_marginTop="20dp" android:layout_marginEnd="16dp"/>
+            <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/default_albumart"
+                    android:id="@+id/bottom_album"
+                    android:scaleType="centerCrop" app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="0.4"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import application.core.PlayerController;
 import application.model.Song;
@@ -43,18 +44,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull @NotNull MyViewHolder myViewHolder, int i) {
 
         Song song = songs.get(i);
-        Uri albumCover = song.getAlbumArtUri();
-        if (albumCover != null) {
-            myViewHolder.songImage.setImageURI(albumCover);
 
-            if (myViewHolder.songImage.getDrawable() == null){
-                myViewHolder.songImage.setImageResource(R.drawable.default_albumart);
-            }
-        }
-     //   myViewHolder.songImage.setText(String.valueOf(song.getId()));
         myViewHolder.songName.setText(String.valueOf(song.getName()));
         myViewHolder.songAuthor.setText(String.valueOf(song.getArtist()));
         myViewHolder.songLen.setText(String.valueOf(song.getDuration()));
+        Uri albumCover = song.getAlbumArtUri();
+        if (albumCover != null) {
+            myViewHolder.songImage.setImageURI(albumCover);
+            if (myViewHolder.songImage.getDrawable() == null){
+                myViewHolder.songImage.setImageResource(R.drawable.default_albumart);
+           }
+        }
         myViewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +73,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         TextView songName, songAuthor, songLen;
         ImageView songImage;
         LinearLayout linearLayout;
+        CardView cardView;
         public MyViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             songName = itemView.findViewById(R.id.song_name_txt);
@@ -80,6 +81,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             songImage = itemView.findViewById(R.id.cover);
             songLen = itemView.findViewById(R.id.song_len_txt);
             linearLayout = itemView.findViewById(R.id.mainLayout);
+            cardView = itemView.findViewById(R.id.cardView);
         }
     }
 }

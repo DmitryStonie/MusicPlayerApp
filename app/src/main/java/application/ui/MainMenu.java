@@ -54,7 +54,7 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         songsList = new SongsList(activity,playerController);
         songsManager = new SongsManager();
         userList = new UsersList();
-        musicPlayer = new MusicPlayer();
+
 
         Toolbar toolbar = activity.findViewById(R.id.toolbar); //Ignore red line errors
         activity.setSupportActionBar(toolbar);

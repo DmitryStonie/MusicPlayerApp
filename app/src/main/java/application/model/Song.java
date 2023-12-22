@@ -76,7 +76,7 @@ public class Song {
     public Uri getAlbumArtUri() {
         return albumArtUri;
     }
-    private byte[] getImage() {
+    public byte[] getImage() {
         byte[] art;
         try {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
