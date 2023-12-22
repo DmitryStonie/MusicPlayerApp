@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+import application.core.Client;
 import com.example.musicplayer.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -40,6 +41,8 @@ public class Login {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        new Client("aaa", "192.168.0.101","7777").start();
+
                         EditText name = activity.findViewById(R.id.loginText);
                         EditText pass = activity.findViewById(R.id.passwordText);
                         EditText address = activity.findViewById(R.id.Ip);

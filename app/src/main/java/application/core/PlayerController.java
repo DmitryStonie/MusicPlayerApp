@@ -58,6 +58,9 @@ public class PlayerController {
         mediaPlayer.start();
         return currentSong;
     }
+    public Song getCurrentSong(){
+        return currentSong;
+    }
     public void pauseSong(){
         if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
