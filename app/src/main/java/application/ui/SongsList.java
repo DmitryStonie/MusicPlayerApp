@@ -46,6 +46,7 @@ public class SongsList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SongsController controller = new SongsController(getContext());
         ArrayList<Song> songs =  controller.getSongs();
+
         customAdapter = new CustomAdapter(getContext(),songs, playerController);
         recyclerView = activity.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(customAdapter);
