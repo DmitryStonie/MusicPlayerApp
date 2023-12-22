@@ -35,7 +35,7 @@ public class Authorize extends AsyncTask<String, Integer, Long> {
                 return AUTH_SUCCESS;
             return AUTH_FAIL;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return AUTH_FAIL;
         }
     }
 
