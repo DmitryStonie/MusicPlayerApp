@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
         if(!PermissionUtils.hasPermissions(MainActivity.this))
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
 
-        contPlay = new PlayerController(MainActivity.this, new SongsController(MainActivity.this), new AlbumsController(MainActivity.this));
-        contPlay.playSong();
-        contPlay.nextSong();
+ //       contPlay = new PlayerController(MainActivity.this, new SongsController(MainActivity.this), new AlbumsController(MainActivity.this));
+//        contPlay.playSong();
+        //        contPlay.nextSong();
 
 /*        setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {

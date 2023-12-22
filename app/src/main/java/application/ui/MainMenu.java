@@ -11,6 +11,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import application.core.AlbumsController;
+import application.core.PlayerController;
+import application.core.SongsController;
 import com.example.musicplayer.MainActivity;
 import com.example.musicplayer.R;
 import com.google.android.material.navigation.NavigationView;
@@ -23,8 +26,6 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     private MusicPlayer musicPlayer;
     private AppCompatActivity activity;
     private DrawerLayout drawerLayout;
-    private FragmentTransaction fragmentTransaction;
-    private FragmentManager fragmentManager;
 
     public void openSideMenu(){
 
@@ -47,8 +48,13 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     public void create(AppCompatActivity activity, Bundle savedInstanceState){
         this.activity = activity;
         activity.setContentView(R.layout.activity_main);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        SongsController songsController = new SongsController(activity.getApplicationContext());
+        AlbumsController albumsController = new AlbumsController(activity.getApplicationContext());
+        PlayerController playerController = new PlayerController(activity.getApplicationContext(), songsController,albumsController);
+        songsList = new SongsList(activity,playerController);
+        songsManager = new SongsManager();
+        userList = new UsersList();
+        musicPlayer = new MusicPlayer();
 
         Toolbar toolbar = activity.findViewById(R.id.toolbar); //Ignore red line errors
         activity.setSupportActionBar(toolbar);
@@ -60,7 +66,6 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         if (savedInstanceState == null) {
-            songsList = new SongsList(activity);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, songsList).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
@@ -69,18 +74,18 @@ public class MainMenu extends AppCompatActivity implements NavigationView.OnNavi
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_songlist) {
-            songsList = new SongsList(activity);
+   //         songsList = new SongsList(activity);
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, songsList).commit();
         }
         else if (item.getItemId() == R.id.nav_albumsongs)
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AlbumsList()).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, albumsList).commit();
         else if (item.getItemId() == R.id.nav_addsong)
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SongsManager()).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, songsManager).commit();
         else if (item.getItemId() == R.id.nav_users)
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UsersList()).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, userList).commit();
         else if (item.getItemId() == R.id.nav_exit) {
-            activity.finish();
- //           Toast.makeText(activity, "Logout!", Toast.LENGTH_SHORT).show();
+ //           activity.finish();
+            Toast.makeText(activity, "Logout!", Toast.LENGTH_SHORT).show();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

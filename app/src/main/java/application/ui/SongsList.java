@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import application.core.PlayerController;
 import application.core.SongsController;
 import application.model.Song;
 import com.example.musicplayer.MainActivity;
@@ -22,7 +23,9 @@ public class SongsList extends Fragment {
     private AppCompatActivity activity;
     private CustomAdapter customAdapter;
     private RecyclerView recyclerView;
-    public SongsList(AppCompatActivity activity){
+    private PlayerController playerController;
+    public SongsList(AppCompatActivity activity, PlayerController playerController){
+        this.playerController = playerController;
         this.activity = activity;
     }
     public void selectSong(){
@@ -43,7 +46,7 @@ public class SongsList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SongsController controller = new SongsController(getContext());
         ArrayList<Song> songs =  controller.getSongs();
-        customAdapter = new CustomAdapter(getContext(),songs);
+        customAdapter = new CustomAdapter(getContext(),songs, playerController);
         recyclerView = activity.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
