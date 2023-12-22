@@ -58,6 +58,10 @@ public class PlayerController {
         mediaPlayer.start();
         return currentSong;
     }
+    public void setSongs(ArrayList<Song> songs, Song song){
+        this.songs = songs;
+        this.currentSong = song;
+    }
     public Song getCurrentSong(){
         return currentSong;
     }

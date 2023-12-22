@@ -24,6 +24,7 @@ public class SongsList extends Fragment {
     private CustomAdapter customAdapter;
     private RecyclerView recyclerView;
     private PlayerController playerController;
+    public static Song CURRENT_SONG;
     public SongsList(AppCompatActivity activity, PlayerController playerController){
         this.playerController = playerController;
         this.activity = activity;
@@ -46,11 +47,19 @@ public class SongsList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SongsController controller = new SongsController(getContext());
         ArrayList<Song> songs =  controller.getSongs();
-
+        MusicPlayer musicPlayer = new MusicPlayer(playerController);
         customAdapter = new CustomAdapter(getContext(),songs, playerController);
         recyclerView = activity.findViewById(R.id.recyclerView);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         customAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        CURRENT_SONG = playerController.getCurrentSong();
+    }
+
+
 }
