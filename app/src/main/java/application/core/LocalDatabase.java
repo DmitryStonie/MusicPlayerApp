@@ -27,7 +27,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
     private Connection database;
     private Context context;
     private Socket socket;
-    private static final String DATABASE_NAME = "LocalDatabase.db";
+    public static final String DATABASE_NAME = "LocalDatabase.db";
     private static final int DATABASE_VERSION = 1;
 
     public static final String SONG_TABLE_NAME = "songs";

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import application.core.AlbumsController;
+import application.core.Client;
 import application.core.PlayerController;
 import application.core.SongsController;
 import application.model.Song;
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         login.create(this, savedInstanceState);
         if(!PermissionUtils.hasPermissions(MainActivity.this))
             PermissionUtils.requestPermissions(MainActivity.this, PERMISSION_STORAGE);
-
  //       contPlay = new PlayerController(MainActivity.this, new SongsController(MainActivity.this), new AlbumsController(MainActivity.this));
 //        contPlay.playSong();
         //        contPlay.nextSong();
