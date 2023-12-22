@@ -50,18 +50,17 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         myViewHolder.songName.setText(songName);
         myViewHolder.songAuthor.setText(String.valueOf(song.getArtist()));
         myViewHolder.songLen.setText(String.valueOf(song.getDuration()));
-        Uri albumCover = song.getAlbumArtUri();
-        if (albumCover != null) {
-            myViewHolder.songImage.setImageURI(albumCover);
-            if (myViewHolder.songImage.getDrawable() == null){
+    //    Uri albumCover = song.getAlbumArtUri();
+    //    if (albumCover != null) {
+    //        myViewHolder.songImage.setImageURI(albumCover);
+    //        if (myViewHolder.songImage.getDrawable() == null){
                 myViewHolder.songImage.setImageResource(R.drawable.default_albumart);
-           }
-        }
+    //       }
+    //    }
         myViewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 playerController.playSongs(songs,song);
-                MusicPlayer musicPlayer = new MusicPlayer();
             }
         });
     }

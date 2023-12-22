@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,8 +27,12 @@ public class AlbumsCustomAdapter extends RecyclerView.Adapter<AlbumsCustomAdapte
     private Context context;
     private ArrayList<Album> albums;
     private PlayerController playerController;
+    private AlbumSongsAdapter customAdapter;
+    private  RecyclerView recyclerView;
+    private AppCompatActivity activity;
 
-    public AlbumsCustomAdapter(Context context, ArrayList<Album> albums, PlayerController playerController){
+    public AlbumsCustomAdapter(Context context, ArrayList<Album> albums, PlayerController playerController, AppCompatActivity activity){
+        this.activity = activity;
         this.playerController = playerController;
         this.context = context;
         this.albums = albums;
@@ -54,21 +59,13 @@ public class AlbumsCustomAdapter extends RecyclerView.Adapter<AlbumsCustomAdapte
             }
         }
 
-     /*   AlbumsController controller = new AlbumsController(context);
-        ArrayList<Song> songs =  controller.;
-        MusicPlayer musicPlayer = new MusicPlayer(playerController);
-        customAdapter = new CustomAdapter(context,songs, playerController);
-        recyclerView = activity.findViewById(R.id.recyclerView);
+   /*     ArrayList<Song> songs =  album.getSongs();
+        customAdapter = new AlbumSongsAdapter(context,songs, playerController);
+        recyclerView = activity.findViewById(R.id.recyclerview2);
         recyclerView.setAdapter(customAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        customAdapter.notifyDataSetChanged();
- /*       viewHolder.linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playerController.playSongs(songs,song);
-                MusicPlayer musicPlayer = new MusicPlayer();
-            }
-        });*/
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        customAdapter.notifyDataSetChanged();*/
+
     }
 
     @Override

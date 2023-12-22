@@ -42,5 +42,7 @@
     </androidx.cardview.widget.CardView>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="379dp"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerview2"
+    />
 </LinearLayout>

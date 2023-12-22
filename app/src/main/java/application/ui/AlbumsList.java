@@ -49,7 +49,7 @@ public class AlbumsList extends Fragment {
         AlbumsController controller = new AlbumsController(getContext());
         ArrayList<Album> albums = controller.getAlbums();
       //  MusicPlayer musicPlayer = new MusicPlayer(playerController);
-        customAdapter = new AlbumsCustomAdapter(getContext(),albums, playerController);
+        customAdapter = new AlbumsCustomAdapter(getContext(),albums, playerController, activity);
         recyclerView = activity.findViewById(R.id.recyclerview1);
         recyclerView.setAdapter(customAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

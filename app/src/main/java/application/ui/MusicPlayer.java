@@ -70,12 +70,12 @@ public class MusicPlayer extends Fragment {
         if (s.length() > 15) s = s.substring(0,15)+ "...";
         songName.setText(s);
         artist.setText(CURRENT_SONG.getArtist());
-        Uri albumCover = CURRENT_SONG.getAlbumArtUri();
-        if (albumCover != null) {
-            album.setImageURI(albumCover);
-            if (album.getDrawable() == null) {
+    //    Uri albumCover = CURRENT_SONG.getAlbumArtUri();
+    //    if (albumCover != null) {
+     //       album.setImageURI(albumCover);
+     //       if (album.getDrawable() == null) {
                 album.setImageResource(R.drawable.default_albumart);
-            }
-        }
+       //     }
+      //  }
     }
 }
