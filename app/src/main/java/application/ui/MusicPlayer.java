@@ -1,5 +1,6 @@
 package application.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +8,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
+import application.core.LocalDatabase;
 import application.core.PlayerController;
 import application.model.Song;
 import com.example.musicplayer.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+
+import static application.ui.SongsList.CURRENT_SONG;
+
 
 public class MusicPlayer extends Fragment {
 
@@ -24,6 +31,10 @@ public class MusicPlayer extends Fragment {
     public MusicPlayer(PlayerController playerController){
         this.playerController = playerController;
     }
+    public MusicPlayer(){
+
+    }
+
     public void playSong(){
 
     }
@@ -47,8 +58,24 @@ public class MusicPlayer extends Fragment {
         album = view.findViewById(R.id.bottom_album);
         nextBtn = view.findViewById(R.id.bottom_next);
         playBtn = view.findViewById(R.id.bottom_play);
-       // Song song = playerController.
-       // artist
-        return inflater.inflate(R.layout.fragment_player, container, false);
+  //      songName.setText(CURRENT_SONG.getName());
+  //      artist.setText("jopa");
+        return view;
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        String s = CURRENT_SONG.getName();
+        if (s.length() > 15) s = s.substring(0,15)+ "...";
+        songName.setText(s);
+        artist.setText(CURRENT_SONG.getArtist());
+        Uri albumCover = CURRENT_SONG.getAlbumArtUri();
+        if (albumCover != null) {
+            album.setImageURI(albumCover);
+            if (album.getDrawable() == null) {
+                album.setImageResource(R.drawable.default_albumart);
+            }
+        }
     }
 }
