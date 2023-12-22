@@ -12,6 +12,11 @@ import com.example.musicplayer.MainActivity;
 import com.example.musicplayer.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.concurrent.ExecutionException;
+
+import static application.core.Authorize.AUTH_FAIL;
+import static application.core.Authorize.AUTH_SUCCESS;
+
 public class Login {
     private String ip;
     private String username;
@@ -21,8 +26,15 @@ public class Login {
     private Bundle savedInstanceState;
 
     public void logIn(){
-        Authorize auth = new Authorize(ip);
-        if(auth.authorize(username, password))
+        Long result;
+        Authorize auth = new Authorize();
+        auth.execute(username, password, ip);
+        try {
+            result = auth.get();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        if(result.equals(AUTH_SUCCESS))
             Toast.makeText(activity.getApplicationContext(), "LogIn successful", Toast.LENGTH_SHORT).show();
         else {
             Toast.makeText(activity.getApplicationContext(), "LogIn failed", Toast.LENGTH_LONG).show();
