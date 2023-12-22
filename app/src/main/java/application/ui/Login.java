@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import application.core.Authorize;
 import application.core.Client;
+import com.example.musicplayer.MainActivity;
 import com.example.musicplayer.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,6 +21,13 @@ public class Login {
     private Bundle savedInstanceState;
 
     public void logIn(){
+        Authorize auth = new Authorize(ip);
+        if(auth.authorize(username, password))
+            Toast.makeText(activity.getApplicationContext(), "LogIn successful", Toast.LENGTH_SHORT).show();
+        else {
+            Toast.makeText(activity.getApplicationContext(), "LogIn failed", Toast.LENGTH_LONG).show();
+            return;
+        }
         MainMenu mainMenu = new MainMenu();
         mainMenu.create(activity, savedInstanceState);
     }
@@ -41,8 +51,6 @@ public class Login {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        new Client("aaa", "192.168.0.101","7777").start();
-
                         EditText name = activity.findViewById(R.id.loginText);
                         EditText pass = activity.findViewById(R.id.passwordText);
                         EditText address = activity.findViewById(R.id.Ip);
