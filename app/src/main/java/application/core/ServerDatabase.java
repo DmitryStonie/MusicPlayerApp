@@ -16,17 +16,14 @@ import application.model.Album;
 import application.model.Song;
 import application.model.User;
 
-import java.io.*;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.sql.*;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class LocalDatabase extends SQLiteOpenHelper {
+public class ServerDatabase extends SQLiteOpenHelper {
     private Connection database;
+
     private Context context;
-    private Socket socket;
     private static final String DATABASE_NAME = "LocalDatabase.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -42,102 +39,26 @@ public class LocalDatabase extends SQLiteOpenHelper {
     public static final String USER_PASSWORD= "user_password";
 
 
-    private static final Integer DATABASE_REQUEST = 1;
-    private static final Integer DATABASE_REQUEST_OK = 2;
-    private static final Integer DATABASE_REQUEST_FAIL = 3;
-    private static final Integer DATABASE_SONG_REQUEST = 3;
-
-    private static final long BUFFER_SIZE = 4096;
-
-
-
-    public LocalDatabase(@Nullable Context context, String ip, int port) {
+    public ServerDatabase(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        try {
-            socket = new Socket(ip, port);
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            DataInputStream in = new DataInputStream(socket.getInputStream());
-            sendDatabaseRequest(out);
-            getDatabase(in);
+    }
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-    private void sendDatabaseRequest(DataOutputStream out) throws IOException{
-        try {
-            byte code = DATABASE_REQUEST.byteValue();
-            out.writeInt(DATABASE_REQUEST);
-        } catch (IOException e) {
-            throw e;
-        }
-    }
-    private boolean getDatabase(DataInputStream in) throws IOException{
-            int response = in.readInt();
-            if (response == DATABASE_REQUEST_FAIL)
-                return false;
-            else if (response == DATABASE_REQUEST_OK) {
-                String filename = getFilename(in);
-                //return getFile(in, filename);
-            }
-        return true;
-    }
-    private String getFilename(DataInputStream in) throws IOException{
-        String filename;
-        try {
-            int filePathLength = in.readInt();
-            byte[] buffer = new byte[filePathLength];
-            int bytesRead = in.read(buffer, 0, filePathLength);
-            if(bytesRead != filePathLength){
-                throw new IOException("Error in reading filename!");
-            }
-            String[] r = new String(buffer, StandardCharsets.UTF_8).split("\\\\");
-            filename = r[r.length-1];
-        } catch (IOException e) {
-            throw new IOException("Some error occurred!");
-        }
-        return filename;
-    }
-    private void getFile(DataInputStream in, String filename) throws IOException{
-        new File("uploads").mkdirs();
-        int userStatus;
-        File file = new File("uploads\\" + filename);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)){
-            long fileLength = in.readLong(), readFileLength = 0;
-            byte[] buffer = new byte[4096];
-            int bytes = 0;
-            long toRead = BUFFER_SIZE;
-            while (fileLength - readFileLength > 0) {
-                bytes = in.read(buffer, 0, (int)(toRead));
-                if(bytes == 0) break;
-                readFileLength += bytes;
-                if(fileLength - readFileLength < 4096){
-                    toRead = fileLength - readFileLength;
-                }
-                fileOutputStream.write(buffer, 0, bytes);
-                fileOutputStream.flush();
-            }
-        } catch (IOException e){
-
-        }
-    }
-    public LocalDatabase(@Nullable Context context){
+    public ServerDatabase(@Nullable Context context, ContentResolver contentResolver, Uri uri){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        //Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA+" LIKE?", new String[]{"%.mp3%"}, null);
+        Cursor cursor = contentResolver.query(uri, null, MediaStore.Audio.Media.DATA+" LIKE?", new String[]{"%.mp3%"}, null);
 
-//        if(cursor != null){
-//            while(cursor.moveToNext()){
-//                final String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
-//                final String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-//                final String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
-//                final String length = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
-//
-//                //addSong(new Song(0, ));
-//            }
-//        }
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                final String name = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+                final String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+                final String album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+                final String length = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
+
+                //addSong(new Song(0, ));
+            }
+        }
     }
 
     Cursor readAllSongs(){
@@ -203,6 +124,11 @@ public class LocalDatabase extends SQLiteOpenHelper {
             cursor = db.rawQuery(query, null);
         }
         return cursor;
+    }
+    public boolean processLogin(String username, String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("Select * from " + USER_TABLE_NAME + " where " + USER_NAME + " = ? and " + USER_PASSWORD + " = ?", new String[]{username, password});
+        return cursor.getCount() > 0;
     }
     public Album getAlbum(String album_id) {
         return new Album();
@@ -276,7 +202,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
 
                 name = name.substring(0, name.lastIndexOf("."));
 
-                Song song = new Song(id, name, duration, artist, album, uri, albumArtUri, Song.ON_DEVICE);
+                Song song = new Song(id, name, duration, artist, album, uri, albumArtUri, Song.ON_SERVER);
                 songs.add(song);
             }
         }
@@ -285,7 +211,7 @@ public class LocalDatabase extends SQLiteOpenHelper {
     }
     public static ArrayList<Album> getAlbums(Context context) {
         ArrayList<Album> albums = new ArrayList<>();
-        ArrayList<Song> songs = LocalDatabase.getSongs(context);
+        ArrayList<Song> songs = ServerDatabase.getSongs(context);
         HashMap<String, Album> albumNames = new HashMap<>();
         songs.forEach(song -> {
             if (!albumNames.containsKey(song.getAlbumName()))
@@ -297,4 +223,5 @@ public class LocalDatabase extends SQLiteOpenHelper {
         });
         return albums;
     }
+
 }

@@ -17,13 +17,16 @@ public class Song {
     private ArrayList<Byte> data;
     private Uri songUri;
     private Uri albumArtUri;
+    private int location;
+    public static final int ON_DEVICE = 1;
+    public static final int ON_SERVER = 2;
 
 
     public Song() {
 
     }
 
-    public Song(long id, String name, int duration, String artist, String albumName, Uri songUri, Uri albumArtUri) {
+    public Song(long id, String name, int duration, String artist, String albumName, Uri songUri, Uri albumArtUri, int location) {
         this.id = id;
         this.name = name;
         this.duration = duration;
@@ -31,6 +34,7 @@ public class Song {
         this.albumName = albumName;
         this.songUri = songUri;
         this.albumArtUri = albumArtUri;
+        this.location = location;
     }
 
 
